@@ -149,18 +149,21 @@ while True:
             
         # Count time for hands detected
         if hands_detected:
-            if 'hands_detected_time' not in locals() or hands_detected_time is None:
+            if hands_detected_time is None:
                 hands_detected_time = time.time()
-            else:
+                remaining_check = CHECK_TIME
                 show_check = True
+            elif not hands_checked:
                 elapsed_time = time.time() - hands_detected_time
                 remaining_check = max(0, CHECK_TIME - elapsed_time)
-                if not hands_checked:
-                    print(f"detected hand for : {remaining_check:.1f}s")
                 if elapsed_time >= CHECK_TIME:
                     hands_checked = True
+                    show_check = False
         else:
             hands_detected_time = None
+            hands_checked = False
+            show_check = False
+            remaining_check = 0
         
         if hands_detected and result and result.multi_hand_landmarks and hands_checked:
             hand = result.multi_hand_landmarks[0]
