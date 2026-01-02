@@ -38,6 +38,11 @@ If the first camera index fails, the script automatically tries the next one.
 - Exit: Hold thumb below the wrist for `CLOSE_TIME` seconds.
 - ESC: Closes the OpenCV window and ends the program.
 
+## On-screen HUD
+- FPS, Hands (detection state), Mouse (active/waiting), MediaPipe status, Frame counter.
+- Check: countdown for initial detection window (`CHECK_TIME`).
+- Countdown: thumb-down exit timer (`CLOSE_TIME`).
+
 ## Configuration (edit in main.py)
 | Name | Description | Default |
 | --- | --- | --- |
@@ -53,9 +58,21 @@ If the first camera index fails, the script automatically tries the next one.
 
 Adjust these values in [main.py](main.py) to tune detection sensitivity, borders, and gestures.
 
+Behavior notes:
+- Controls activate only after continuous detection for `CHECK_TIME`; set it to 0 for immediate activation if desired.
+- Exit gesture fires after `CLOSE_TIME` with thumb below wrist.
+- `BORDER_MARGIN` and `SMOOTHING` influence cursor stability; tweak to reduce edge jitter or lag.
+
 ## Notes and troubleshooting
 - PyAutoGUI failsafe is disabled to prevent sudden corners from halting execution; keep this in mind when testing.
 - Multi-monitor setups: `CONTROL_MONITOR_INDEX` uses the ordering from `screeninfo.get_monitors()`.
 - If MediaPipe fails to import, ensure you installed `mediapipe==0.10.0` and that your Python matches its supported versions.
 - If the window is slow, reduce resolution or `SMOOTHING`, or disable drawing of landmarks.
 - On permission-restricted systems, camera access may need OS approval.
+
+Optional virtualenv setup:
+```bash
+python -m venv venv
+venv\Scripts\activate  # Windows
+pip install -r requirements.txt  # or the packages listed above
+```
