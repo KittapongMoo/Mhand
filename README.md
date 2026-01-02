@@ -52,7 +52,7 @@ If the first camera index fails, the script automatically tries the next one.
 | `CLICK_DIST` | Normalized distance threshold for pinch detection | 0.05 |
 | `SCROLL_SPEED` | Scroll delta passed to PyAutoGUI | 25 |
 | `BORDER_MARGIN` | Normalized border margin to avoid edge jitter | 0.15 |
-| `CHECK_TIME` | Seconds a hand must stay detected before enabling control | 1 |
+| `CHECK_TIME` | Seconds a hand must stay detected before enabling control | 2 |
 | `CLOSE_TIME` | Seconds thumb must stay below wrist to exit | 3 |
 | `CONTROL_MONITOR_INDEX` | Monitor index used for cursor mapping (`screeninfo`) | 1 |
 
