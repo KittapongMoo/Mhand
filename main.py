@@ -32,6 +32,9 @@ mouse_initialized = False
 hands_detected = False
 prev_scroll_y = None
 hands_checked = False
+remaining_close = 0
+remaining_check = 0
+show_check = False
 
 pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0.001  # Minimal pause for faster response
@@ -131,13 +134,13 @@ while True:
             result = hands.process(rgb)
             
             # Debug output every 2 seconds
-            if frame_count % 60 == 0:
-                if result and result.multi_hand_landmarks:
-                    print(f"✓ Hand detected at frame {frame_count}")
-                else:
-                    print(f"✗ No hand detected at frame {frame_count}")
+            # if frame_count % 60 == 0:
+            #     if result and result.multi_hand_landmarks:
+            #         print(f"✓ Hand detected at frame {frame_count}")
+            #     else:
+            #         print(f"✗ No hand detected at frame {frame_count}")
             
-            hands_detected = bool(result and result.multi_hand_landmarks)
+            hands_detected = bool(result and result.multi_hand_landmarks) # Check if hands are detected
             
         except Exception as e:
             print(f"MediaPipe error at frame {frame_count}: {e}")
@@ -149,10 +152,11 @@ while True:
             if 'hands_detected_time' not in locals() or hands_detected_time is None:
                 hands_detected_time = time.time()
             else:
+                show_check = True
                 elapsed_time = time.time() - hands_detected_time
-                remaining = max(0, CHECK_TIME - elapsed_time)
+                remaining_check = max(0, CHECK_TIME - elapsed_time)
                 if not hands_checked:
-                    print(f"detected hand for : {remaining:.1f}s")
+                    print(f"detected hand for : {remaining_check:.1f}s")
                 if elapsed_time >= CHECK_TIME:
                     hands_checked = True
         else:
@@ -255,8 +259,8 @@ while True:
                     prev_scroll_y = time.time()
                 else:
                     elapsed = time.time() - prev_scroll_y
-                    remaining = max(0, CLOSE_TIME - elapsed)
-                    print(f"Thumb down countdown: {remaining:.1f}s")
+                    remaining_close = max(0, CLOSE_TIME - elapsed)
+                    print(f"Thumb down countdown: {remaining_close:.1f}s")
                     if elapsed > CLOSE_TIME:
                         print("Thumb down detected for 5 seconds - exiting program")
                         break
@@ -279,6 +283,8 @@ while True:
     cv2.putText(frame, f"Mouse: {'Active' if mouse_initialized else 'Waiting'}", (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0) if mouse_initialized else (0, 255, 255), 2)
     cv2.putText(frame, f"MediaPipe: {'OK' if hands and use_legacy else 'ERROR'}", (10, 120), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0) if hands and use_legacy else (0, 0, 255), 2)
     cv2.putText(frame, f"Frame: {frame_count}", (10, 150), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+    cv2.putText(frame, f"Check: {remaining_check:.1f}s" if show_check else "Check: N/A", (10, 210), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0) if show_check else (255, 255, 255), 2)
+    cv2.putText(frame, f"Coutndown: {remaining_close:.1f}s" if prev_scroll_y else "Countdown: N/A", (10, 180), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0) if prev_scroll_y else (255, 255, 255), 2)
     
     # show the frame
     cv2.imshow("Hand Mouse (High FPS)", frame)
