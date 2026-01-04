@@ -12,8 +12,8 @@ INFERENCE_SKIP = 1       # run mediapipe every frame for better detection
 SMOOTHING = 0.5         # mouse smoothing (0.0 - 1.0)
 CLICK_DIST = 0.05
 SCROLL_SPEED = 25        # scroll speed
-BORDER_MARGIN = 0.15      # 10% border margin (adjust: 0.05-0.15)
-CHECK_TIME = 2            # time to check hand detection in seconds
+BORDER_MARGIN = 0.2      # 20% border margin (adjust: 0.05-0.25)
+CHECK_TIME = 0            # time to check hand detection in seconds
 CLOSE_TIME = 3            # time to hold thumb down to close program
 CONTROL_MONITOR_INDEX = 1  # monitor index for mouse control
 # ----------------------------------------
@@ -244,19 +244,19 @@ while True:
                 clicking = False
                 
             # Check for double click gesture
-            dis = math.sqrt((thumb_tip.x - middle_tip.x) ** 2 + (thumb_tip.y - middle_tip.y) ** 2)
-            if dis < CLICK_DIST:
-                if not double_clicking:
-                    try:
-                        pyautogui.doubleClick()
-                        print("Double Click!")
-                        double_clicking = True
-                    except Exception as e:
-                        print(f"Double Click error: {e}")
-            else:
-                double_clicking = False
+            # dis = math.sqrt((thumb_tip.x - middle_tip.x) ** 2 + (thumb_tip.y - middle_tip.y) ** 2)
+            # if dis < CLICK_DIST:
+            #     if not double_clicking:
+            #         try:
+            #             pyautogui.doubleClick()
+            #             print("Double Click!")
+            #             double_clicking = True
+            #         except Exception as e:
+            #             print(f"Double Click error: {e}")
+            # else:
+            #     double_clicking = False
                 
-            # if thumb is below wrist more than 2 seconds, close program
+            # if thumb is below wrist more than n seconds, close program
             if thumb_tip.y > wrist.y:
                 if prev_scroll_y is None:
                     prev_scroll_y = time.time()
