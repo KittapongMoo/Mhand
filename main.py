@@ -13,7 +13,7 @@ SMOOTHING = 0.5         # mouse smoothing (0.0 - 1.0)
 CLICK_DIST = 0.05
 SCROLL_SPEED = 25        # scroll speed
 BORDER_MARGIN = 0.2      # 20% border margin (adjust: 0.05-0.25)
-CHECK_TIME = 0            # time to check hand detection in seconds
+CHECK_TIME = 2            # time to check hand detection in seconds
 CLOSE_TIME = 3            # time to hold thumb down to close program
 CONTROL_MONITOR_INDEX = 1  # monitor index for mouse control
 # ----------------------------------------
